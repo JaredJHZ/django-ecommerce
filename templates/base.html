@@ -1,11 +1,13 @@
 {% load static %}
-
+{% load cart_template_cart %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecommerce</title>
+    <title>{% block head_title %}{% endblock %}</title>
+    {% block extra_head %}
+    {% endblock %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -53,7 +55,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/">
         <img src="{% static 'img/logo.jpeg' %}" width="90" height="50" alt="">
       </a>
 
@@ -68,32 +70,39 @@
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link waves-effect" href="/">Inicio
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
+      
         </ul>
 
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="checkout">
-              <span class="badge red z-depth-1 mr-1"> 1 </span>
-              <i class="fas fa-shopping-cart"></i>
-              <span class="clearfix d-none d-sm-inline-block"> Carrito de compras </span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="https://www.facebook.com/mdbootstrap'" class="nav-link waves-effect" target="_blank">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="https://twitter.com/MDBootstrap" %} class="nav-link waves-effect" target="_blank">
-              <i class="fab fa-twitter"></i>
-            </a>
-          </li>
+          {% if request.user.is_authenticated %} 
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="checkout">
+                <span class="badge red z-depth-1 mr-1"> {{request.user|cart_item_count}} </span>
+                <i class="fas fa-shopping-cart"></i>
+                <span class="clearfix d-none d-sm-inline-block"> Carrito de compras </span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
+                <span class="clearfix d-none d-sm-inline-block"> Cerrar sesión </span>
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'account_login' %}">
+                <span class="clearfix d-none d-sm-inline-block"> Iniciar sesión </span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
+                <span class="clearfix d-none d-sm-inline-block"> Registrate </span>
+              </a>
+            </li>
+          {% endif %}
+            
         </ul>
 
       </div>
@@ -116,7 +125,10 @@
 
     <div id="content">
         {% block content %}{% endblock %}
+        {% block extra_body %}{% endblock %}
     </div>
+
+    
 
 
   <!--Footer-->
