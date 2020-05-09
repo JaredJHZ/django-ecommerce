@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.shortcuts import reverse
-
+from django_countries.fields import CountryField
 
 CATEGORY_CHOICES = (
     ('P', 'Bikini primaveral'),
@@ -38,6 +38,9 @@ class Item(models.Model):
             'slug':self.slug
         })
 
+    def get_title_upper(self):
+        return self.title[0].upper() + self.title[1:]
+
     def __str__(self):
         return self.title
 
@@ -72,6 +75,7 @@ class Order(models.Model):
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now= True)
     ordered_date = models.DateTimeField()
+    billing_address = models.ForeignKey('BillingAddress', on_delete=models.CASCADE, blank = True, null = True)
 
     def __str__(self):
         return self.user.username
@@ -81,3 +85,13 @@ class Order(models.Model):
         for order_item in self.items.all():
             total += order_item.get_final_price()
         return total
+
+class BillingAddress(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    street_address = models.CharField(max_length = 100)
+    apartment_address = models.CharField(max_length = 100)
+    country = CountryField(multiple = False)
+    zip = models.CharField(max_length = 6)
+
+    def __str__(self):
+        return self.user.username

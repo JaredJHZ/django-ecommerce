@@ -24,7 +24,10 @@
           <!--Content-->
           <div class="p-4">
 
+
+
             <div class="mb-3">
+              <h1>{{object.get_title_upper}}</h1>
               <a href="">
                 <span class="badge purple mr-1">{{object.get_category_display}}</span>
               </a>
@@ -43,7 +46,7 @@
 
             <p class="lead font-weight-bold">Description</p>
 
-            <p>{{object.descr}}</p>
+            <p>{{object.description}}</p>
 
             <a href="{{object.get_add_to_cart_url}}" class="btn btn-primary btn-md my-0 p">Add to cart
               <i class="fas fa-shopping-cart ml-1"></i>
