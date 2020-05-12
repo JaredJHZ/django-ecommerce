@@ -2,6 +2,8 @@ from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 
+from localflavor.mx.models import (MXZipCodeField)
+
 PAYMENT_CHOICES = (
     ('S', 'Stripe'),
     ('P', 'Paypal')
@@ -9,12 +11,14 @@ PAYMENT_CHOICES = (
 
 class CheckoutForm(forms.Form):
     street_address = forms.CharField( widget = forms.TextInput(attrs = {
-        'placeholder': 'Miguel Hidalgo 1290'
+        'class': 'form-control'
     }) )
-    apartment_address =  forms.CharField( widget = forms.TextInput(attrs = {
-        'placeholder': 'Numero de apartamento'
+
+    suburb =  forms.CharField( widget = forms.TextInput(attrs = {
+        'class': 'form-control'
     }) )
-    country = CountryField(blank_label='(select country)').formfield(
+
+    country = CountryField(blank_label='(Elija un país)').formfield(
         widget = CountrySelectWidget(
             attrs = {
                 'class': 'custom-select d-block w-100'
@@ -24,6 +28,15 @@ class CheckoutForm(forms.Form):
     zip = forms.CharField(
         widget = forms.TextInput(
             attrs = {
+                'class': 'form-control'
+            }
+        )
+    )
+
+    phone_number = forms.CharField(
+        widget = forms.TextInput(
+            attrs = {
+                'type':'number',
                 'class': 'form-control'
             }
         )

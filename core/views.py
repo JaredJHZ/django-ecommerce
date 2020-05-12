@@ -1,6 +1,7 @@
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, View
-from .models import Item, OrderItem, Order, BillingAddress
+from .models import Item, OrderItem, Order, BillingAddress, Payment
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib import messages
@@ -8,6 +9,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CheckoutForm
+import stripe
+
+stripe.api_key = "sk_test_En70VblPfMWFvxVyvh9Knszb00XdGJY9co"
 
 class CheckoutView(View):
     def get(self, *args , **kwargs): 
@@ -21,35 +25,39 @@ class CheckoutView(View):
         form = CheckoutForm(self.request.POST or None)
         try:
             order = Order.objects.get(user=self.request.user, ordered = False)
-            print(order)
             if form.is_valid():
                 print("form valid")
                 street_address = form.cleaned_data.get('street_address')
-                apartment_address = form.cleaned_data.get('apartment_address')
+                suburb = form.cleaned_data.get('suburb')
                 country = form.cleaned_data.get('country')
                 zip = form.cleaned_data.get('zip')
+                phone_number = form.cleaned_data.get('phone_number')
                 # same_billing_address = form.cleaned_data.get('same_billing_address')
                 # save_info = form.cleaned_data.get('save_info')
                 payment_option = form.cleaned_data.get('payment_option')
                 
-                print(street_address)
-                print(apartment_address)
-                print(country)
-                print(zip)
-                print(payment_option)
 
                 billing_address = BillingAddress(
                     user = self.request.user,
                     street_address = street_address,
-                    apartment_address = apartment_address,
+                    suburb = suburb,
                     country = country,
-                    zip = zip
+                    zip = zip,
+                    phone_number = phone_number
                 )
 
-                print(billing_address)
                 billing_address.save()
                 order_billing_address = billing_address
+                order.billing_address = order_billing_address
                 order.save()
+
+                if payment_option == 'S':
+                    return redirect('core:payment', payment_option="stripe")
+                else:
+                    return redirect('core:payment', payment_option="paypal")
+
+
+
                 return redirect('core:checkout')
             messages.warning(self.request, "Algo fallo")
             return redirect('core:checkout')
@@ -58,7 +66,87 @@ class CheckoutView(View):
             return redirect('core:order-summary')
 
 
+class PaymentView(View):
+    def get(self, *args, **kwargs):
+        # order
+        order = Order.objects.get(user = self.request.user, ordered = False)
+        context = {
+            'order': order
+        }
 
+        return render(self.request, "payment.html"  , context = context)
+
+    def post(self, *args, **kwargs):
+        order = Order.objects.get(user = self.request.user, ordered = False)
+        token = self.request.POST.get('stripeToken')
+        print("token")
+        print(self.request.POST)
+        amount = int(order.get_total()) 
+
+        try:
+            charge = stripe.Charge.create(
+                amount = amount * 100,
+                currency = "MXN",
+                source = token,
+                description = "cargo de patyshop"
+            )
+
+            
+            payment = Payment()
+            payment.stripe_charge_id = charge['id']
+            payment.user = self.request.user
+            payment.amount = order.get_total()
+            payment.save()
+
+            order.ordered = True
+            order.payment = payment
+            order.save()
+            messages.success(self.request,"Pedido confirmado")
+            return redirect("/")
+        except stripe.error.CardError as e:
+            body = e.json_body
+            err = body.get('error', {})
+            messages.warning(self.request, f"{err.get('message')}")
+            return redirect("/")
+
+        except stripe.error.RateLimitError as e:
+            # Too many requests made to the API too quickly
+            messages.warning(self.request, "Rate limit error")
+            return redirect("/")
+
+        except stripe.error.InvalidRequestError as e:
+            # Invalid parameters were supplied to Stripe's API
+            print(e)
+            messages.warning(self.request, "Invalid parameters")
+            return redirect("/")
+
+        except stripe.error.AuthenticationError as e:
+            # Authentication with Stripe's API failed
+            # (maybe you changed API keys recently)
+            messages.warning(self.request, "Not authenticated")
+            return redirect("/")
+
+        except stripe.error.APIConnectionError as e:
+                # Network communication with Stripe failed
+            messages.warning(self.request, "Network error")
+            return redirect("/")
+
+        except stripe.error.StripeError as e:
+                # Display a very generic error to the user, and maybe send
+                # yourself an email
+            messages.warning(
+                self.request, "Something went wrong. You were not charged. Please try again.")
+            return redirect("/")
+
+        except Exception as e:
+            # send an email to ourselves
+            messages.warning(
+                self.request, "A serious error occurred. We have been notifed.")
+            return redirect("/")     
+
+        
+
+    
 
 
 def product_page(request):

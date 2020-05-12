@@ -146,3 +146,6 @@ LOGIN_REDIRECT_URL = '/'
 #crispy forms
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+STRIPE_PUBLIC_KEY = ""
+STRIPE_SECRET_KEY = ""
