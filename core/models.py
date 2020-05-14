@@ -22,6 +22,8 @@ class Item(models.Model):
     slug = models.SlugField()
     discount_price = models.FloatField(blank=True, null=True)
     description = models.TextField()
+    image = models.ImageField(blank = True, null = True)
+    
 
     def get_absolute_url(self):
         return reverse("core:product_page", kwargs={
@@ -77,6 +79,7 @@ class Order(models.Model):
     ordered_date = models.DateTimeField()
     billing_address = models.ForeignKey('BillingAddress', on_delete=models.CASCADE, blank = True, null = True)
     payment = models.ForeignKey('Payment', on_delete=models.CASCADE, blank = True, null = True)
+    coupon = models.ForeignKey('Coupon', on_delete=models.CASCADE, blank = True, null = True)
 
     def __str__(self):
         return self.user.username
@@ -85,6 +88,9 @@ class Order(models.Model):
         total = 0
         for order_item in self.items.all():
             total += order_item.get_final_price()
+        if self.coupon:
+            total -= self.coupon.amount
+        
         return total
 
 class BillingAddress(models.Model):
@@ -107,4 +113,9 @@ class Payment(models.Model):
     def __str__(self):
         return self.user.username
 
+class Coupon(models.Model):
+    code = models.CharField(max_length = 15)
+    amount = models.FloatField()
 
+    def __str__(self):
+        return self.code
