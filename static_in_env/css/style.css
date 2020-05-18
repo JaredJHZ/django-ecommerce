@@ -13,6 +13,11 @@ body,
     .carousel .carousel-inner .active {
       height: 100%; }
 
+.card-image img {
+    width: 300px;
+    height: 300px;
+}
+
 /* Adjustment for mobile devices*/
 @media (max-width: 776px) {
   .carousel {

@@ -13,6 +13,11 @@ LABEL_CHOICES = (
     ('O', 'En oferta')
 )
 
+ADRESS_CHOICES = (
+    ('F', 'Factura'),
+    ('E', 'Envio')
+)
+
 class Item(models.Model):
     title = models.CharField(max_length = 100)
     price = models.FloatField()
@@ -73,13 +78,19 @@ class OrderItem(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
+    ref_code = models.CharField(max_length=30)
     ordered = models.BooleanField(default=False)
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now= True)
     ordered_date = models.DateTimeField()
-    billing_address = models.ForeignKey('BillingAddress', on_delete=models.CASCADE, blank = True, null = True)
+    billing_address = models.ForeignKey('Address',related_name="billing_address" , on_delete=models.CASCADE, blank = True, null = True)
+    shipping_address = models.ForeignKey('Address', related_name="shipping_address" ,on_delete=models.CASCADE, blank = True, null = True)
     payment = models.ForeignKey('Payment', on_delete=models.CASCADE, blank = True, null = True)
     coupon = models.ForeignKey('Coupon', on_delete=models.CASCADE, blank = True, null = True)
+    being_delivered = models.BooleanField(default=False)
+    received = models.BooleanField(default=False)
+    refund_requested = models.BooleanField(default=False)
+    refund_granted = models.BooleanField(default = False)
 
     def __str__(self):
         return self.user.username
@@ -93,16 +104,21 @@ class Order(models.Model):
         
         return total
 
-class BillingAddress(models.Model):
+class Address(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     street_address = models.CharField(max_length = 100)
     suburb = models.CharField(max_length = 100)
     phone_number = models.CharField(max_length = 10)
     country = CountryField(multiple = False)
     zip = models.CharField(max_length = 6)
+    address_type = models.CharField(max_length = 1, choices = ADRESS_CHOICES)
+    default = models.BooleanField(default = False)
 
     def __str__(self):
         return self.user.username
+
+    class Meta:
+        verbose_name_plural = "Direcciones"
 
 class Payment(models.Model):
     stripe_charge_id = models.CharField(max_length = 50)
@@ -119,3 +135,12 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
+
+class Refund(models.Model):
+    order = models.ForeignKey(Order, on_delete = models.CASCADE)
+    reason = models.TextField()
+    accepted = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return f"{self.pk}"

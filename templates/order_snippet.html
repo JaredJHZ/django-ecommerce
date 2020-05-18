@@ -23,19 +23,9 @@
     </li>
     {% endif %}
     <li class="list-group-item d-flex justify-content-between">
-        <span>Total (USD)</span>
+        <span>Total (MXN)</span>
         <strong>${{ order.get_total }}</strong>
     </li>
 
-
-    <form class="card p-2" action="{% url 'core:add-coupon' %}" method="POST">
-      {% csrf_token %}
-      <div class="input-group">
-          {{ couponform.code }}
-          <div class="input-group-append">
-          <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
-          </div>
-      </div>
-    </form>
 
   </div>
