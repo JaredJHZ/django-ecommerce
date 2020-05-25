@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <main class="mt-5 pt-4"">
+        <div class="busqueda">
+           <form class="busqueda" method="GET"  action="" >
+                <div class="form-group">
+                    <label style="text-align: center;" for="busqueda">Busqueda</label>
+                    <input class="form-control" id="busqueda" placeholder="Busqueda" type="text" />
+                </div>
+                <button type="submit" class="btn btn-primary" >Buscar</button>
+           </form>
+        </div>
+    </main>
+{% endblock %}

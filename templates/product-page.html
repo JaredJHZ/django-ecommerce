@@ -8,13 +8,13 @@
     <div class="container dark-grey-text mt-5">
 
       <!--Grid row-->
-      <div class="row wow fadeIn">
+      <div class="row wow fadeIn justify-content-center">
 
         <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg" class="img-fluid" alt="">
-
+        <div class="col-md-6 mb-4" >
+          <div class="custom-center">
+            <img src="{{item.image.url}}" style="width: 80%; height: 100%;"  alt="">
+          </div>
         </div>
         <!--Grid column-->
 
@@ -44,18 +44,23 @@
               {% endif %}
             </p>
 
-            <p class="lead font-weight-bold">Description</p>
+            <p class="lead font-weight-bold">Descripción</p>
 
             <p>{{object.description}}</p>
 
-            <a href="{{object.get_add_to_cart_url}}" class="btn btn-primary btn-md my-0 p">Add to cart
-              <i class="fas fa-shopping-cart ml-1"></i>
-            </a>
 
-            <a href="{{object.get_remove_from_cart_url}}" class="btn btn-danger btn-md my-0 p">Remove from cart
-              <i class="fas fa-shopping-cart ml-1"></i>
-            </a>
+            <div class="buttons">
+              <a href="{{object.get_add_to_cart_url}}" class="btn btn-primary btn-md my-0 p">Agregar al carrito
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </a>
+  
+              <a href="{{object.get_remove_from_cart_url}}" class="btn btn-danger btn-md my-0 p">Remover del carrito
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </a>
+  
+            </div>
 
+   
           </div>
           <!--Content-->
 
@@ -68,20 +73,8 @@
       <hr>
 
       <!--Grid row-->
-      <div class="row d-flex justify-content-center wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-md-6 text-center">
-
-          <h4 class="my-4 h4">Additional information</h4>
-
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
-            voluptates,
-            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
-
-        </div>
-        <!--Grid column-->
-
+      <div>
+        <h1 style="text-align: center;">Galeria de fotos</h1>
       </div>
       <!--Grid row-->
 
@@ -89,27 +82,30 @@
       <div class="row wow fadeIn">
 
         <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4">
+        <div class="col-lg-4 col-md-12 mb-4 custom-center">
 
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
+          <img style="width: 80%; height: 100%;"  src="{{item.image.url}}" class="img-fluid" alt="">
 
         </div>
         <!--Grid column-->
 
         <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
+        <div class="col-lg-4 col-md-6 mb-4 custom-center">
 
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
+          <img style="width: 80%; height: 100%;"  src="{{item.image2.url}}" class="img-fluid" alt="">
 
         </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        {% if item.image3 %}
+        <div class="col-lg-4 col-md-6 mb-4 custom-center">
+
+          <img style="width: 80%; height: 100%;"  src="{{item.image3.url}}" class="img-fluid" alt="">
+
+        </div>
+        {% endif %}
+
         <!--Grid column-->
 
       </div>

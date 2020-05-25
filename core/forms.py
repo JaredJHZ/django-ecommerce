@@ -1,6 +1,5 @@
 from django import forms
-from django_countries.fields import CountryField
-from django_countries.widgets import CountrySelectWidget
+
 
 from localflavor.mx.models import (MXZipCodeField)
 
@@ -9,62 +8,29 @@ PAYMENT_CHOICES = (
     ('P', 'Paypal')
 )
 
+FROM_GUADALAJARA = (
+    ('S', 'Si'),
+    ('N', 'No')
+)
+
 class CheckoutForm(forms.Form):
 
-    shipping_address = forms.CharField(required = False )
+    shipping_address = forms.CharField(required = True )
 
-    suburb_shipping =  forms.CharField( required = False )
+    suburb_shipping =  forms.CharField( required = True )
 
-    shipping_country = CountryField(blank_label='(Elija un país)').formfield(
-        required = False,
-        widget = CountrySelectWidget(
-            attrs = {
-                'class': 'custom-select d-block w-100'
-            }
-        )
-    )
-    shipping_zip = forms.CharField(required = False)
+    shipping_zip = forms.CharField(required = True)
 
-    shipping_phone_number = forms.CharField(required = False)
+    shipping_phone_number = forms.CharField(required = True)
 
     set_default_shipping = forms.BooleanField(required = False)
-    use_default_shipping = forms.BooleanField(required = False)
 
+    from_guadalajara = forms.ChoiceField(choices = FROM_GUADALAJARA , required = True )
 
-    billing_address = forms.CharField(required = False )
-
-    suburb_billing =  forms.CharField( required = False )
-
-    billing_country = CountryField(blank_label='(Elija un país)').formfield(
-        required = False,
-        widget = CountrySelectWidget(
-            attrs = {
-                'class': 'custom-select d-block w-100'
-            }
-        )
-    )
-    billing_zip = forms.CharField(required = False)
-
-    billing_phone_number = forms.CharField(required = False)
-
-    same_billing_address = forms.BooleanField(required=False)
-    set_default_billing = forms.BooleanField(required = False)
-    use_default_billing = forms.BooleanField(required = False)
-
+    shipping_state = forms.CharField(required = True)
 
     payment_option = forms.ChoiceField(choices=PAYMENT_CHOICES)
 
-class CouponForm(forms.Form):
-    code = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Promo code',
-        'aria-label': 'Recipient\'s username',
-        'aria-describedby': 'basic-addon2'
-    }))
+    city = forms.CharField( required = True )
 
-class RefundForm(forms.Form):
-    ref_code = forms.CharField()
-    message = forms.CharField( widget = forms.Textarea(attrs = {
-        'rows':4
-    }))
-    email = forms.EmailField()
+    inside_guadalajara = forms.CharField( required = False )

@@ -21,7 +21,7 @@
           <!--Card-->
           <div class="card">
             <!--Card content-->
-            <form id="form-check" method="POST" class="card-body">
+            <form id="form-check" method="POST"  class="card-body">
 
               {% csrf_token %}
 
@@ -44,18 +44,30 @@
                   </div>
 
                   <div class="row">
-
-                      <div class="col-lg-4 col-md-12 mb-4">
-                        <label for="country">País</label>
-                        {{form.shipping_country}}
-                      <div class="invalid-feedback">
-                        Please select a valid country.
-                      </div>
+                      <div class="col-lg-4 col-md-2 mb-3">
+                        <label for="country">¿El envio es a Guadalajara?</label>
+                        <div class="row justify-content-center">
+                          <select style="width: 50%;" class="form-control" id="from_guadalajara" name="from_guadalajara">
+                            <option disabled selected>Seleecione</option>
+                            <option value="S">Si</option>
+                            <option value="N">No</option>
+                          </select>
+                        </div>
                     </div>
 
-                    <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="col-lg-4 col-md-4 mb-4">
+                      <label for="city" class=""> Ciudad/ Municipio </label>
+                      <input type="text" placeholder="Ciudad/ Municipio" id="city" name="city" class="form-control" />
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 mb-4 hideable_estado">
+                      <label for="shipping_state" class=""> Estado </label>
+                      <input type="text" placeholder="estado" id="shipping_state" name="shipping_state" class="form-control" />
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 mb-4">
                       <label for="zip">Código postal</label>
-                      <input type="text" placeholder="Colonia Revolucion" id="shipping_zip" name="shipping_zip" class="form-control" />
+                      <input type="text" placeholder="00000" id="shipping_zip" name="shipping_zip" class="form-control" />
                       <div class="invalid-feedback">
                         Zip code required.
                       </div>
@@ -63,84 +75,19 @@
 
                   </div>
 
-
-                <div class="custom-control custom-checkbox">
-                  <input name="same_billing_address" type="checkbox" class="custom-control-input" id="same_billing_address">
-                  <label class="custom-control-label" for="same_billing_address">La dirección de facturación es la misma que la de envio </label>
-                </div>
-                <div class="custom-control custom-checkbox">
-                  <input name="set_default_shipping" type="checkbox" class="custom-control-input" id="set_default_shipping">
-                  <label class="custom-control-label" for="set_default_shipping">Guardar como la dirección por defecto</label>
-                </div>
-
+                  <div class="hideable_guadalajara">
+                      <label>Seleccione un tipo de envio</label>
+                      <select id="inside_guadalajara" name="inside_guadalajara">
+                        <option selected disabled>Selecciona</option>
+                        <option value="medio">Punto medio (Sin costo extra)</option>
+                        <option value="domicilio">A domicilio (Costo de 80 pesos)</option>
+                      </select>
+                  </div>
               </div>
 
-              {% if default_shipping_address %}
-
-              <div class="custom-control custom-checkbox">
-                <input name="use_default_shipping" type="checkbox" class="custom-control-input" id="use_default_shipping">
-                <label class="custom-control-label" for="use_default_shipping">{{default_shipping_address.street_address|truncatechars:10}}</label>
-              </div>
-
-              {% endif %}
+  
 
               <hr>
-
-
-
-              <div class="hideable_billing_form">
-                <h3>Direccion de facturación</h3>
-                <div class="md-form mb-8">
-                  <input type="text" placeholder="Av Benito Juarez #23" id="billing_address" name="billing_address" class="form-control" />
-                  <label for="billing_address" class="">Direccion</label>
-                </div>
-
-                <div class="md-form mb-5">
-                  <input type="text" placeholder="Colonia Revolucion" id="suburb_billing" name="suburb_billing" class="form-control" />
-                  <label for="suburb_billing" class=""> Colonia </label>
-                </div>
-
-                <div class="md-form mb-3">
-                  <input type="text" placeholder="3323232342" id="billing_phone_number" name="billing_phone_number" class="form-control" />
-                  <label for="billing_phone_number" class=""> Número teléfonico </label>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-lg-4 col-md-12 mb-4">
-                      <label for="billing_country">País</label>
-                      {{form.billing_country}}
-                    <div class="invalid-feedback">
-                      Please select a valid country.
-                    </div>
-                  </div>
-
-                  <div class="col-lg-4 col-md-6 mb-4">
-                    <label for="billing_zip">Código postal</label>
-                    <input type="text" placeholder="Colonia Revolucion" id="billing_zip" name="billing_zip" class="form-control" />
-                    <div class="invalid-feedback">
-                      Zip code required.
-                    </div>
-                  </div>
-
-                </div>
-
-
-                <div class="custom-control custom-checkbox">
-                  <input name="set_default_billing" type="checkbox" class="custom-control-input" id="set_default_billing">
-                  <label class="custom-control-label" for="set_default_billing">Guardar como la dirección de facturacion por defecto</label>
-                </div>
-              </div>
-          
-              {% if default_billing_address %}
-
-              <div class="custom-control custom-checkbox">
-                <input name="use_default_billing" type="checkbox" class="custom-control-input" id="use_default_billing">
-                <label class="custom-control-label" for="use_default_billing">{{default_billing_address.street_address|truncatechars:10}}</label>
-              </div>
-
-              {% endif %}
-
 
               <h3>Opciones de pago</h3>
 
@@ -154,7 +101,7 @@
               </div>
       
               <hr class="mb-4">
-              <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Continuar al pago</button>
 
             </form>
 
@@ -174,6 +121,7 @@
       <!--Grid row-->
 
     </div>
+
   </main>
   <!--Main layout-->
 
@@ -182,10 +130,59 @@
   {% block extra_scripts %}
   <script>
     var hideable_shipping_form = $('.hideable_shipping_form');
-    var hideable_billing_form = $('.hideable_billing_form');
+    var hideable_guadalajara = $('.hideable_guadalajara');
+    var hideable_estado = $('.hideable_estado');
     
     var use_default_shipping = document.querySelector("input[name=use_default_shipping]");
-    var use_default_billing = document.querySelector("input[name=use_default_billing]");
+    var from_guadalajara = document.querySelector("select[name=from_guadalajara]")
+    var inside_guadalajara = document.querySelector("select[name=inside_guadalajara]")
+
+    var shipping_state = document.querySelector("input[name=shipping_state]");
+
+    var precioFinal = document.getElementById('precio-final');
+    var precio = document.getElementById('precio');
+
+    let sacarPrecio = (envio) => {
+      var precioEnNumero = precio.innerHTML.slice(1);
+
+      precioEnNumero = parseFloat(precioEnNumero);
+
+      precioEnNumero += envio;
+
+
+      precioFinal.innerHTML = "Mas envio $"+precioEnNumero;
+    }
+
+    hideable_guadalajara.hide();
+    hideable_estado.hide();
+    
+
+    from_guadalajara.addEventListener('change', (event) => {
+      if(event.target.value == "S") {
+        shipping_state.value = "Guadalajara"
+        shipping_state.hide = true;
+        hideable_guadalajara.show();
+        hideable_estado.hide();
+      } else {
+        shipping_state.value = "";
+        shipping_state.disabled = false;
+        hideable_guadalajara.hide();
+        sacarPrecio(130);
+        hideable_estado.show();
+      }
+    })
+
+
+    inside_guadalajara.addEventListener('change', (event) => {
+      let value = event.target.value
+      if (value === 'medio') {
+        console.log("siiiii")
+        sacarPrecio(0);
+      } else {
+        sacarPrecio(80);
+      }
+    })
+
     
     use_default_shipping.addEventListener('change', function() {
       if (this.checked) {
@@ -195,13 +192,6 @@
       }
     })
     
-    use_default_billing.addEventListener('change', function() {
-      if (this.checked) {
-        hideable_billing_form.hide();
-      } else {
-        hideable_billing_form.show();
-      }
-    })    
 
     </script>
   {% endblock %}

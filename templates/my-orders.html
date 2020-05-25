@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div style="width: 100vw; display: flex; justify-content: center; align-content: center;">
+    <div class="row" style="width: 80%;">
+      <div class="col-md-12">
+          <h1 style="text-align: center;">Tus ordenes</h1>
+          <ul style="list-style: none;">
+              {% for order in object_list %}
+              <li>
+                <div class="card" style="padding:30px">
+                  
+                    <div class="row" style="margin-bottom: 10px;">
+                      <div class="col-md-9">
+                        <h5 class="card-title">Orden establecida el dia <strong>{{order.ordered_date}}</strong></h5>
+                      </div>
+                      <div class="col-md-3">
+                        {% if order.sent %}
+                          <p>Producto enviado</p>
+                          <p>{{order.ref_code}}</p>
+                        {% else %}
+                          <p>El envio aun no se ha realizado, checa de nuevo mas tarde</p>
+                        {% endif %}
+                      </div>
+                    </div>
+    
+                    <div class="row">
+                      <div class="col-md-8">
+                        <h5>Direccion:</h5>
+                        <div style="text-align: center;">
+                          <h5>Calle: {{order.shipping_address.street_address}}</h5>
+                          <h5>Colonia: {{order.shipping_address.suburb}}</h5>
+                          <h5>Estado: {{order.shipping_address.state}}</h5>
+                          <h5>Telefono: {{order.shipping_address.phone_number}}</h5>
+                          <h5>C.P: {{order.shipping_address.zip}}</h5>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <h5 style="text-align: center;">Precio total:</h5>
+                        <h5 style="text-align: center;"> <strong>${{order.get_total|add:order.sent_price}}</strong></h5>
+                      </div>
+                    </div>
+                </div>
+              </li>
+              {% endfor %}
+          </ul>
+      </div>
+  </div>
+
+{% endblock %}

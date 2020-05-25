@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices. -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
+{% endblock %}
+
+{% block content %}
+    <h1>Paypal</h1>
+    <div id="paypal-button-container"></div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    var paid = "{{order.get_total|add:order.sent_price}}"
+    paid = Number(paid)
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        // This function sets up the details of the transaction, including the amount and line item details.
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: paid,
+              currency:'MXN'
+            },
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        // This function captures the funds from the transaction.
+        return actions.order.capture().then(function(details) {
+          // This function shows a transaction success message to your buyer.
+          $.ajax({
+            method: 'POST',
+            url: "/confirmpaypal/",
+            data: {'nombre':  details.payer.name.given_name,   'csrfmiddlewaretoken': "{{ csrf_token }}"},
+            success: function (data) {
+                window.location = '/'
+            },
+            error: function (data) {
+                alert("it didnt work");
+            }
+        });
+
+        });
+      }
+    }).render('#paypal-button-container');
+    //This function displays Smart Payment Buttons on your web page.
+  </script>
+{% endblock %}

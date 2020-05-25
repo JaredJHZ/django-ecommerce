@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.shortcuts import reverse
-from django_countries.fields import CountryField
+
 
 CATEGORY_CHOICES = (
     ('P', 'Bikini primaveral'),
@@ -19,15 +19,21 @@ ADRESS_CHOICES = (
 )
 
 class Item(models.Model):
-    title = models.CharField(max_length = 100)
-    price = models.FloatField()
-    discount_price = models.FloatField(blank=True, null=True)
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length = 2)
-    label = models.CharField(choices=LABEL_CHOICES, max_length = 2)
-    slug = models.SlugField()
-    discount_price = models.FloatField(blank=True, null=True)
-    description = models.TextField()
+    title = models.CharField(max_length = 100, verbose_name = "Nombre del articulo")
+    price = models.FloatField(verbose_name = "Precio")
+    discount_price = models.FloatField(blank=True, null=True, verbose_name = "Precio de descuento")
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length = 2, verbose_name = "Categorias")
+    label = models.CharField(choices=LABEL_CHOICES, max_length = 2, verbose_name = "Nuevo o en oferta?")
+    slug = models.SlugField(verbose_name = "Link")
+    description = models.TextField(verbose_name = "Descripcion")
     image = models.ImageField(blank = True, null = True)
+    image2 = models.ImageField(blank = True, null = True)
+    image3 = models.ImageField(blank = True, null = True)
+    stock = models.IntegerField(default = 1, verbose_name = "En bodega")
+
+    class Meta:
+        verbose_name = "Producto"
+        verbose_name_plural = "Productos"
     
 
     def get_absolute_url(self):
@@ -83,14 +89,10 @@ class Order(models.Model):
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now= True)
     ordered_date = models.DateTimeField()
-    billing_address = models.ForeignKey('Address',related_name="billing_address" , on_delete=models.CASCADE, blank = True, null = True)
     shipping_address = models.ForeignKey('Address', related_name="shipping_address" ,on_delete=models.CASCADE, blank = True, null = True)
     payment = models.ForeignKey('Payment', on_delete=models.CASCADE, blank = True, null = True)
-    coupon = models.ForeignKey('Coupon', on_delete=models.CASCADE, blank = True, null = True)
-    being_delivered = models.BooleanField(default=False)
-    received = models.BooleanField(default=False)
-    refund_requested = models.BooleanField(default=False)
-    refund_granted = models.BooleanField(default = False)
+    sent_price = models.IntegerField(blank = True, null = True)
+    sent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
@@ -99,19 +101,16 @@ class Order(models.Model):
         total = 0
         for order_item in self.items.all():
             total += order_item.get_final_price()
-        if self.coupon:
-            total -= self.coupon.amount
         
         return total
 
 class Address(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    street_address = models.CharField(max_length = 100)
-    suburb = models.CharField(max_length = 100)
-    phone_number = models.CharField(max_length = 10)
-    country = CountryField(multiple = False)
-    zip = models.CharField(max_length = 6)
-    address_type = models.CharField(max_length = 1, choices = ADRESS_CHOICES)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name = "Cliente")
+    street_address = models.CharField(max_length = 100, verbose_name = "Calle")
+    suburb = models.CharField(max_length = 100 , verbose_name ="Colonia")
+    phone_number = models.CharField(max_length = 10, verbose_name = "Telefono")
+    state = models.CharField( max_length = 30, verbose_name = "estado")
+    zip = models.CharField(max_length = 6, verbose_name = "Codigo Postal")
     default = models.BooleanField(default = False)
 
     def __str__(self):
@@ -129,12 +128,12 @@ class Payment(models.Model):
     def __str__(self):
         return self.user.username
 
-class Coupon(models.Model):
-    code = models.CharField(max_length = 15)
-    amount = models.FloatField()
+# class Coupon(models.Model):
+#     code = models.CharField(max_length = 15)
+#     amount = models.FloatField()
 
-    def __str__(self):
-        return self.code
+#     def __str__(self):
+#         return self.code
 
 class Refund(models.Model):
     order = models.ForeignKey(Order, on_delete = models.CASCADE)
