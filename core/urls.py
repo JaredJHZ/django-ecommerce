@@ -1,4 +1,7 @@
 from django.urls import path
+
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import (
     CheckoutView, HomeView, 
     ItemDetailView, add_to_cart, 
@@ -29,4 +32,4 @@ urlpatterns = [
     path('paypal/', PaypalView.as_view() , name = "paypal"),
     path('request-refund/', RequestRefundView.as_view(), name="request-refund"),
     path('confirmpaypal/', paypal_response, name="paypal_response")
-]
+] + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
