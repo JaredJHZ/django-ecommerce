@@ -29,7 +29,7 @@ class Item(models.Model):
     image = models.ImageField(blank = True, null = True)
     image2 = models.ImageField(blank = True, null = True)
     image3 = models.ImageField(blank = True, null = True)
-    stock = models.IntegerField(default = 1, verbose_name = "En bodega")
+    stock = models.IntegerField(default = 1, verbose_name = "Stock")
 
     class Meta:
         verbose_name = "Producto"
@@ -60,10 +60,13 @@ class Item(models.Model):
 
 
 class OrderItem(models.Model):
-    item = models.ForeignKey(Item, on_delete= models.CASCADE)
-    quantity = models.IntegerField(default= 1)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE, blank = True, null = True)
-    ordered = models.BooleanField(default=False)
+    item = models.ForeignKey(Item, on_delete= models.CASCADE , verbose_name = "Producto")
+    quantity = models.IntegerField(default= 1 , verbose_name = "Cantidad")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE, blank = True, null = True, verbose_name = "Usuario")
+    ordered = models.BooleanField(default=False, verbose_name="¿Ordenado?")
+    class Meta:
+        verbose_name = "Producto de orden"
+        verbose_name_plural = "Productos de orden"
 
     def __str__(self):
         return f"{self.quantity} of {self.item.title}"
@@ -83,16 +86,20 @@ class OrderItem(models.Model):
         return self.get_total_item_price()
 
 class Order(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
-    ref_code = models.CharField(max_length=30)
-    ordered = models.BooleanField(default=False)
-    items = models.ManyToManyField(OrderItem)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE, verbose_name = "Usuario")
+    sent = models.BooleanField(default=False, verbose_name = "¿Ha sido enviado?")
+    ref_code = models.CharField(max_length=30 , verbose_name = "Número de rastreo")
+    ordered = models.BooleanField(default=False , verbose_name = "¿Ordenado?")
+    items = models.ManyToManyField(OrderItem , verbose_name = "Productos")
     start_date = models.DateTimeField(auto_now= True)
-    ordered_date = models.DateTimeField()
-    shipping_address = models.ForeignKey('Address', related_name="shipping_address" ,on_delete=models.CASCADE, blank = True, null = True)
-    payment = models.ForeignKey('Payment', on_delete=models.CASCADE, blank = True, null = True)
-    sent_price = models.IntegerField(blank = True, null = True)
-    sent = models.BooleanField(default=False)
+    ordered_date = models.DateTimeField(verbose_name = "Fecha de orden")
+    shipping_address = models.ForeignKey('Address', related_name="shipping_address" ,on_delete=models.CASCADE, blank = True, null = True, verbose_name = "Dirección")
+    payment = models.ForeignKey('Payment', on_delete=models.CASCADE, blank = True, null = True, verbose_name = "Pago")
+    sent_price = models.IntegerField(blank = True, null = True, verbose_name = "Precio de envío")
+
+    class Meta:
+        verbose_name = "Orden"
+        verbose_name_plural = "Ordenes"
 
     def __str__(self):
         return self.user.username
@@ -112,6 +119,11 @@ class Address(models.Model):
     state = models.CharField( max_length = 30, verbose_name = "estado")
     zip = models.CharField(max_length = 6, verbose_name = "Codigo Postal")
     default = models.BooleanField(default = False)
+    point = models.CharField(max_length = 200, verbose_name = "Punto medio")
+
+    class Meta:
+        verbose_name = "Dirección"
+        verbose_name_plural = "Direcciones"
 
     def __str__(self):
         return self.user.username
@@ -120,11 +132,13 @@ class Address(models.Model):
         verbose_name_plural = "Direcciones"
 
 class Payment(models.Model):
-    stripe_charge_id = models.CharField(max_length = 50)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL , on_delete = models.SET_NULL, blank = True, null = True)
-    amount = models.FloatField()
-    timestamp = models.DateTimeField(auto_now_add = True)
-
+    stripe_charge_id = models.CharField(max_length = 50, verbose_name ="ID de pago")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL , on_delete = models.SET_NULL, blank = True, null = True, verbose_name = "Usuario")
+    amount = models.FloatField(verbose_name="Cantidad (MXN)")
+    timestamp = models.DateTimeField(auto_now_add = True, verbose_name = "Fecha")
+    class Meta:
+        verbose_name = "Pago"
+        verbose_name_plural = "Pagos"
     def __str__(self):
         return self.user.username
 

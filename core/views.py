@@ -49,10 +49,8 @@ class CheckoutView(View):
     def post(self , *args, **kwargs):
         print(self.request.POST)
         form = CheckoutForm(self.request.POST or None)
-        print(form.data)
         try:
             order = Order.objects.get(user=self.request.user, ordered = False)
-            print("es una orden")
             if form.is_valid():
                 if False:
                     pass
@@ -67,27 +65,42 @@ class CheckoutView(View):
 
                     if is_valid_form([shipping_address, suburb_shipping, shipping_country,shipping_zip, shipping_phone_number, shipping_state]):
 
-                        print("es valido...")
+                        punto_medio = False
+
+                        print("okidoki")
 
                         if inside_guadalajara != '':
                             if inside_guadalajara != 'medio':
                                 order.sent_price = 80
                             else:
                                 order.sent_price = 0
+                                punto_medio = True
+                                point = form.cleaned_data.get('point')  
+                                print(point)
                         else:
                             order.sent_price = 130
-                        
 
-                        shipping_address = Address(
+                        if punto_medio:
+                            shipping_address = Address(
+                            user = self.request.user,
+                            street_address = shipping_address,
+                            suburb = suburb_shipping,
+                            zip = shipping_zip,
+                            phone_number = shipping_phone_number,
+                            state = shipping_state,
+                            point = point
+                            )
+                        else:
+                            shipping_address = Address(
                             user = self.request.user,
                             street_address = shipping_address,
                             suburb = suburb_shipping,
                             zip = shipping_zip,
                             phone_number = shipping_phone_number,
                             state = shipping_state
-                        )
+                            )
 
-                        print("todo bien ...")
+
                         
                         shipping_address.save()
                         order.shipping_address = shipping_address
@@ -271,6 +284,10 @@ class HomeFilter(ListView):
             )
         else:
             new_context = Item.objects.all()
+        
+        if len(new_context) < 1:
+            new_context = []
+        
         return new_context
 
     def get_context_data(self, **kwargs):

@@ -63,10 +63,15 @@
             <!--Card-->
 
           </div>
+
         {%endif%}
+        
+
         {% endfor %}
         <!--Grid column-->
-
+        {% if object_list|length < 1 %}
+          <h1 style="text-align: center;">Aún no hay Bikinis de este tipo, por favor vuelve pronto :)</h1>
+        {% endif %}
       <!--Grid row-->
 
     </section>

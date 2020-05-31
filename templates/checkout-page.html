@@ -83,7 +83,29 @@
                         <option value="domicilio">A domicilio (Costo de 80 pesos)</option>
                       </select>
                   </div>
+
+                  <div class="point">
+                    <label>Seleccione un punto medio </label>
+                    <select id="point" name="point">
+                      <option selected disabled>Selecciona</option>
+                      <option value="Aurrera Belisario, calzada y circunvalacion">Aurrera Belisario, calzada y circunvalacion</option>
+                      <option value="Plaza patria">Plaza Patria</option>
+                      <option value="Centro">Centro</option>
+                      <option value="Parque rojo">Parque rojo</option>
+                      <option value="">Aurrera Belisario, calzada y circunvalacion</option>
+                      <option value="Terraza oblatos Soriana tránsito, Chapultepec">Terraza oblatos Soriana tránsito, Chapultepec</option>
+                      <option value="Centro magno ">Centro magno </option>
+                      <option value="Linea1">Linea1</option>
+                      <option value="Linea2">Linea2</option>
+                      <option value="Est. Auditorio">Est. Auditorio</option>
+                      <option value="Est. Periférico nte">Est. Periférico nte</option>
+
+                    </select>
+                </div>
+
               </div>
+
+
 
   
 
@@ -132,10 +154,14 @@
     var hideable_shipping_form = $('.hideable_shipping_form');
     var hideable_guadalajara = $('.hideable_guadalajara');
     var hideable_estado = $('.hideable_estado');
+    var medio =  $('.point');
     
     var use_default_shipping = document.querySelector("input[name=use_default_shipping]");
     var from_guadalajara = document.querySelector("select[name=from_guadalajara]")
     var inside_guadalajara = document.querySelector("select[name=inside_guadalajara]")
+    
+
+
 
     var shipping_state = document.querySelector("input[name=shipping_state]");
 
@@ -155,6 +181,7 @@
 
     hideable_guadalajara.hide();
     hideable_estado.hide();
+    medio.hide();
     
 
     from_guadalajara.addEventListener('change', (event) => {
@@ -176,10 +203,11 @@
     inside_guadalajara.addEventListener('change', (event) => {
       let value = event.target.value
       if (value === 'medio') {
-        console.log("siiiii")
         sacarPrecio(0);
+        medio.show();
       } else {
         sacarPrecio(80);
+        medio.hide();
       }
     })
 

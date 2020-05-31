@@ -6,8 +6,11 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Paypal</h1>
-    <div id="paypal-button-container"></div>
+<div class="col-md-12 mb-4" style="display: flex; flex-flow: column; justify-content: center; align-items: center; align-content: center;">
+  <h1>Pago vía Paypal</h1>
+  <h3>Total: ${{order.get_total|add:order.sent_price}}</h3>
+  <div id="paypal-button-container"></div>
+</div>
 {% endblock %}
 
 {% block extra_scripts %}
@@ -18,10 +21,11 @@
       createOrder: function(data, actions) {
         // This function sets up the details of the transaction, including the amount and line item details.
         return actions.order.create({
+          "intent": "CAPTURE",
           purchase_units: [{
             amount: {
-              value: paid,
-              currency:'MXN'
+              "currency_code": "MXN",
+              "value": paid
             },
           }]
         });

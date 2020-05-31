@@ -4,7 +4,7 @@ from django import forms
 from localflavor.mx.models import (MXZipCodeField)
 
 PAYMENT_CHOICES = (
-    ('S', 'Stripe'),
+    ('S', 'Tarjeta de credito/débito'),
     ('P', 'Paypal')
 )
 
@@ -34,3 +34,5 @@ class CheckoutForm(forms.Form):
     city = forms.CharField( required = True )
 
     inside_guadalajara = forms.CharField( required = False )
+
+    point = forms.CharField(required = False)

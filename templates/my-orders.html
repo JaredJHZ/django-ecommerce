@@ -9,25 +9,25 @@
           <ul style="list-style: none;">
               {% for order in object_list %}
               <li>
-                <div class="card" style="padding:30px">
+                <div class="card" style="padding:10%; margin-bottom: 10%;">
                   
                     <div class="row" style="margin-bottom: 10px;">
                       <div class="col-md-9">
-                        <h5 class="card-title">Orden establecida el dia <strong>{{order.ordered_date}}</strong></h5>
+                        <h5 class="card-title">Orden establecida el día <strong>{{order.ordered_date}}</strong></h5>
                       </div>
                       <div class="col-md-3">
                         {% if order.sent %}
                           <p>Producto enviado</p>
                           <p>{{order.ref_code}}</p>
                         {% else %}
-                          <p>El envio aun no se ha realizado, checa de nuevo mas tarde</p>
+                          <p>El envío aún no se ha realizado, checa de nuevo más tarde</p>
                         {% endif %}
                       </div>
                     </div>
     
                     <div class="row">
                       <div class="col-md-8">
-                        <h5>Direccion:</h5>
+                        <h5>Dirección:</h5>
                         <div style="text-align: center;">
                           <h5>Calle: {{order.shipping_address.street_address}}</h5>
                           <h5>Colonia: {{order.shipping_address.suburb}}</h5>
