@@ -10,11 +10,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CheckoutForm
+from .email import send_email
+from decouple import config
 import stripe
 import random
 import string
 
-stripe.api_key = "sk_live_7A3pZowUhanvS5ST3kPzbesr00dfh4Gpk5"
+stripe.api_key = config('STRIPE_PK')
 
 
 def is_valid_form(values):
@@ -112,8 +114,6 @@ class CheckoutView(View):
 
                 payment_option = form.cleaned_data.get('payment_option')
 
-                print(payment_option)
-
                 if payment_option == 'S':
                     return redirect('core:payment', payment_option="stripe")
                 else:
@@ -157,6 +157,9 @@ def paypal_response(request):
         Item.objects.filter(title = order_item.item.title).update(stock = nueva_cantidad)
 
     order.save()
+
+    send_email(request.user.username)
+
 
 
     messages.info(request, "Se completo el pedido")
@@ -212,6 +215,7 @@ class PaymentView(View):
                 Item.objects.filter(title = order_item.item.title).update(stock = nueva_cantidad)
 
             order.save()
+            send_email(self.request.user.username)
             messages.success(self.request,"Pedido confirmado")
             return redirect("/")
         except stripe.error.CardError as e:
