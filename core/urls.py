@@ -32,4 +32,4 @@ urlpatterns = [
     path('paypal/', PaypalView.as_view() , name = "paypal"),
     path('request-refund/', RequestRefundView.as_view(), name="request-refund"),
     path('confirmpaypal/', paypal_response, name="paypal_response")
-] + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
