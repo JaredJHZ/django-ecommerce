@@ -48,7 +48,7 @@
                         <label for="country">¿El envio es a Guadalajara?</label>
                         <div class="row justify-content-center">
                           <select style="width: 50%;" class="form-control" id="from_guadalajara" name="from_guadalajara">
-                            <option disabled selected>Seleecione</option>
+                            <option disabled selected></option>
                             <option value="S">Si</option>
                             <option value="N">No</option>
                           </select>
@@ -65,43 +65,77 @@
                       <input type="text" placeholder="estado" id="shipping_state" name="shipping_state" class="form-control" />
                     </div>
 
-                    <div class="col-lg-4 col-md-4 mb-4">
+                  </div>
+
+                  <div class="row justify-content-center">
+                    <div class="col-lg-3 col-md-4 mb-4">
                       <label for="zip">Código postal</label>
                       <input type="text" placeholder="00000" id="shipping_zip" name="shipping_zip" class="form-control" />
                       <div class="invalid-feedback">
                         Zip code required.
                       </div>
                     </div>
-
                   </div>
 
-                  <div class="hideable_guadalajara">
+                  <div class="row hideable_guadalajara">
+                    <div class="col-lg-3 col-md-4 mb-4">
                       <label>Seleccione un tipo de envio</label>
-                      <select id="inside_guadalajara" name="inside_guadalajara">
+                      <select id="inside_guadalajara" name="inside_guadalajara" class="form-control" >
                         <option selected disabled>Selecciona</option>
                         <option value="medio">Punto medio (Sin costo extra)</option>
                         <option value="domicilio">A domicilio (Costo de 80 pesos)</option>
                       </select>
+                     </div>
+
+
+                     <div class="point col-lg-3 col-md-4 mb-4">
+                      <label>Seleccione un punto medio </label>
+                      <select id="point" name="point" class="form-control">
+                        <option selected disabled>Selecciona</option>
+                        <option value="Aurrera Belisario, calzada y circunvalacion">Aurrera Belisario, calzada y circunvalacion</option>
+                        <option value="Plaza patria">Plaza Patria</option>
+                        <option value="Centro">Centro</option>
+                        <option value="Parque rojo">Parque rojo</option>
+                        <option value="">Aurrera Belisario, calzada y circunvalacion</option>
+                        <option value="Terraza oblatos Soriana tránsito, Chapultepec">Terraza oblatos Soriana tránsito, Chapultepec</option>
+                        <option value="Centro magno ">Centro magno </option>
+                        <option value="Linea1">Linea1</option>
+                        <option value="Linea2">Linea2</option>
+                        <option value="Est. Auditorio">Est. Auditorio</option>
+                        <option value="Est. Periférico nte">Est. Periférico nte</option>
+                        <option value="Est. Dermatológico">Est. Dermatológico</option>
+                        <option value="Est. Atemajac">Est. Atemajac</option>
+                        <option value="Est. División nte">Est. División nte</option>
+                        <option value="Est. Ávila Camacho">Est. Ávila Camacho</option>
+                        <option value="Est. Mezquitán">Est. Mezquitán/option>
+                        <option value="Est. Refugio">Est. Refugio</option>
+                        <option value="Est. Juárez">Est. Juárez</option>
+                        <option value="Est. Mexicaltzingo">Est. Mexicaltzingo</option>
+                        <option value="Est. Washington">Est. Washington</option>
+                        <option value="Est. Sta Filomena">Est. Sta Filomena</option>
+                        <option value="Est. Unidad deportiva">Est. Unidad deportiva</option>
+                        <option value="Est. Urdaneta">Est. Urdaneta</option>
+                        <option value="Est. 18 de marzo">Est. 18 de marzo</option>
+                        <option value="Est. Isla raza">Est. Isla raza</option>
+                        <option value="Est. Patria">Est. Patria</option>
+                        <option value="Est. España">Est. España</option>
+                        <option value="Est. Santuario mártires">Est. Santuario mártires/option>
+                        <option value="Est. Periférico sur">Est. Periférico sur</option>
+                        <option value="Est. Plaza universidad">Est. Plaza universidad</option>
+                        <option value="Est. San Juan de Dios">Est. San Juan de Dios</option>
+                        <option value="Est. Belisario">Est. Belisario</option>
+                        <option value="Est. Oblatos">Est. Oblatos</option>
+                        <option value="Est. Cristóbal de Oñate">Est. Cristóbal de Oñate</option>
+                        <option value="Est. San Andrés">Est. San Andrés</option>
+                        <option value="Est. San Jacinto">Est. San Jacinto</option>
+                        <option value="Est. San Juan de Dios">Est. Aurora</option>
+                        <option value="Est. Tetlan">Est. Tetlan</option>
+                      </select>
                   </div>
 
-                  <div class="point">
-                    <label>Seleccione un punto medio </label>
-                    <select id="point" name="point">
-                      <option selected disabled>Selecciona</option>
-                      <option value="Aurrera Belisario, calzada y circunvalacion">Aurrera Belisario, calzada y circunvalacion</option>
-                      <option value="Plaza patria">Plaza Patria</option>
-                      <option value="Centro">Centro</option>
-                      <option value="Parque rojo">Parque rojo</option>
-                      <option value="">Aurrera Belisario, calzada y circunvalacion</option>
-                      <option value="Terraza oblatos Soriana tránsito, Chapultepec">Terraza oblatos Soriana tránsito, Chapultepec</option>
-                      <option value="Centro magno ">Centro magno </option>
-                      <option value="Linea1">Linea1</option>
-                      <option value="Linea2">Linea2</option>
-                      <option value="Est. Auditorio">Est. Auditorio</option>
-                      <option value="Est. Periférico nte">Est. Periférico nte</option>
+                  </div>
 
-                    </select>
-                </div>
+              
 
               </div>
 

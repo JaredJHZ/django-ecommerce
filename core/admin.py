@@ -23,7 +23,7 @@ class AddressAdmin(admin.ModelAdmin):
 
 
 admin.site.site_header = "Patyshop ";
-admin.site.site_title = "Administrador de Patyshop";
+admin.site.site_title = "Administrador de Patyshopth";
 admin.site.register(Item)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)

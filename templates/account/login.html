@@ -15,22 +15,18 @@
     <section class="mb-4">
       <div class="row wow fadeIn">
         <div class="col-md-6 offset-3">
-          <h1>Iniciar sesión</h1>
+          <h1 style="text-align: center;" >Iniciar sesión</h1>
 
           {% get_providers as socialaccount_providers %}
   
           {% if socialaccount_providers %}
-          <p>{% blocktrans with site.name as site_name %}Please sign in with one
-          of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-          for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
   
-          <div class="socialaccount_ballot">
+          <div class="socialaccount_ballot" style="display: flex; justify-content: center; margin: 15px;">
   
             <ul class="socialaccount_providers">
               {% include "socialaccount/snippets/provider_list.html" with process="login" %}
             </ul>
-  
-            <div class="login-or">{% trans 'or' %}</div>
+
   
           </div>
   
@@ -47,8 +43,10 @@
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
             {% endif %}
-            <a class="btn btn-default" href="{% url 'account_reset_password' %}">Olvidaste tu contraseña</a>
-            <button class="btn btn-primary" type="submit">Iniciar sesión</button>
+            <div style="display: flex; text-align: center; justify-content: center;">
+              <a class="btn btn-default" href="{% url 'account_reset_password' %}">Olvidaste tu contraseña</a>
+              <button class="btn btn-primary" type="submit">Iniciar sesión</button>
+            </div>
           </form>
         </div>
       </div>
