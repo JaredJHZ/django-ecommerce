@@ -14,7 +14,7 @@ import stripe
 import random
 import string
 
-stripe.api_key = "sk_test_En70VblPfMWFvxVyvh9Knszb00XdGJY9co"
+stripe.api_key = "sk_live_7A3pZowUhanvS5ST3kPzbesr00dfh4Gpk5"
 
 
 def is_valid_form(values):
