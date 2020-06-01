@@ -6,12 +6,14 @@
 
 
 <!--Main layout-->
-<main style="height:80vh; justify-content: center; align-content: center; align-items: center; flex-flow: column; display: flex;">
+<main style=" justify-content: center; align-content: center; align-items: center; flex-flow: column; display: flex;">
   <div class="container">
 
-    <!--Navbar-->
-  
-    <!--/.Navbar-->
+    {% if home %}
+      <div>
+        {% include 'carousel.html' %}
+      </div>
+    {% endif %}
 
     <!--Section: Products v.3-->
     <section class="text-center mb-4">

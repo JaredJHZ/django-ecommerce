@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Item, Order, OrderItem, Payment, Address
+from .models import Item, Order, OrderItem, Payment, Address, Category
 
 def make_refund_accepted(modeladmin, request, queryset):
     queryset.update(refund_requested = False , refund_granted = True)
@@ -29,4 +29,5 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)
 admin.site.register(Payment)
 admin.site.register(Address)
+admin.site.register(Category)
 

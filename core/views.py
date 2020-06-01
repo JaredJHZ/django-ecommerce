@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, View
-from .models import Item, OrderItem, Order, Address, Payment, Refund, Address
+from .models import Item, OrderItem, Order, Address, Payment, Refund, Address, Category
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib import messages
@@ -33,7 +33,8 @@ class CheckoutView(View):
             form = CheckoutForm()
             context  = {
                 'form':form,
-                'order':order
+                'order':order,
+                'categorias':Category.objects.all()
             }
 
             shipping_address_qs = Address.objects.filter(user = self.request.user, default = True)
@@ -131,7 +132,8 @@ class PaypalView(View):
         order = Order.objects.get(user = self.request.user, ordered = False)
         if order.shipping_address:
             context = {
-                'order': order
+                'order': order,
+                'categorias':Category.objects.all()
             }
             return render(self.request, "paypal.html"  , context = context)
 
@@ -173,7 +175,8 @@ class PaymentView(View):
         order = Order.objects.get(user = self.request.user, ordered = False)
         if order.shipping_address:
             context = {
-                'order': order
+                'order': order,
+                'categorias':Category.objects.all()
             }
 
             return render(self.request, "payment.html"  , context = context)
@@ -266,6 +269,11 @@ class HomeView(ListView):
     model = Item
     paginate_by = 4
     template_name = "home-page.html"
+    def get_context_data(self,**kwargs):
+        context = super(HomeView,self).get_context_data(**kwargs)
+        context['categorias'] = Category.objects.all()
+        context['home'] = True
+        return context
 
 class MyOrders(LoginRequiredMixin, ListView):
 
@@ -282,9 +290,10 @@ class HomeFilter(ListView):
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', 'give-default-value')
+        category_id = Category.objects.filter(name = filter_val)
         if len(filter_val) > 0:
             new_context = Item.objects.filter(
-                category=filter_val,
+                category=category_id[0],
             )
         else:
             new_context = Item.objects.all()
@@ -297,6 +306,8 @@ class HomeFilter(ListView):
     def get_context_data(self, **kwargs):
         context = super(HomeFilter, self).get_context_data(**kwargs)
         context['filter'] = self.request.GET.get('filter', 'give-default-value')
+        context['categorias'] = Category.objects.all()
+        context['home'] = False
         return context
 class SearchFilter(ListView):
     model = Item
@@ -314,6 +325,7 @@ class SearchFilter(ListView):
     def get_context_data(self, **kwargs):
         context = super(SearchFilter, self).get_context_data(**kwargs)
         context['filter'] = self.request.GET.get('filter','give-default-value')
+        context['categorias'] = Category.objects.all()
         return context
 
 class OrderSummaryView(LoginRequiredMixin,View):
@@ -321,7 +333,8 @@ class OrderSummaryView(LoginRequiredMixin,View):
         try:
             order = Order.objects.get(user = self.request.user, ordered = False)
             context = {
-                'object': order
+                'object': order,
+                'categorias':Category.objects.all()
             }
             return render(self.request,'order_summary.html', context)
         except ObjectDoesNotExist:
@@ -331,6 +344,10 @@ class OrderSummaryView(LoginRequiredMixin,View):
 class ItemDetailView(DetailView):
     model = Item
     template_name = "product-page.html"
+    def get_context_data(self, **kwargs):
+        context = super(ItemDetailView, self).get_context_data(**kwargs)
+        context['categorias'] = Category.objects.all()
+        return context
 
 @login_required
 def add_to_cart(request, slug):

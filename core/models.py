@@ -18,15 +18,29 @@ ADRESS_CHOICES = (
     ('E', 'Envio')
 )
 
+
+class Category(models.Model):
+    name = models.CharField(max_length = 100, verbose_name = "Nombre")
+
+    class Meta:
+        verbose_name = "Categoria"
+        verbose_name_plural = "Categorias"
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Categorias"
+
 class Item(models.Model):
     title = models.CharField(max_length = 100, verbose_name = "Nombre del articulo")
     price = models.FloatField(verbose_name = "Precio")
     discount_price = models.FloatField(blank=True, null=True, verbose_name = "Precio de descuento")
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length = 2, verbose_name = "Categorias")
+    category = models.ForeignKey(Category, on_delete= models.CASCADE, blank = True, null = True)
     label = models.CharField(choices=LABEL_CHOICES, max_length = 2, verbose_name = "Nuevo o en oferta?")
     slug = models.SlugField(verbose_name = "Link")
     description = models.TextField(verbose_name = "Descripcion")
-    image = models.ImageField(blank = True, null = True)
+    image = models.ImageField()
     image2 = models.ImageField(blank = True, null = True)
     image3 = models.ImageField(blank = True, null = True)
     stock = models.IntegerField(default = 1, verbose_name = "Stock")

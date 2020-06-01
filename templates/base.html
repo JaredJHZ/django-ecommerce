@@ -74,11 +74,16 @@
 
         <!-- Left -->
         <ul class="left">
-          <li>
-            <a class="nav-link waves-effect active" href="/items/?filter=P">Primaverales</a>
-          </li>
-          <li>
-            <a class="nav-link waves-effect active" href="/items/?filter=I">Invernales</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Categorias
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% for categoria in categorias %}
+                <a class="nav-link waves-effect active" href="/items/?filter={{categoria}}">{{categoria}}</a>
+              {% endfor %}
+               
+            </div>
           </li>
           <li>
             <a class="nav-link waves-effect active" href="/search">Búsqueda</a>
@@ -141,7 +146,7 @@
     {% endif %}
     </div>
 
-    <div id="content" style="min-height: 79vh;">
+    <div id="content">
         {% block content %}{% endblock %}
         {% block extra_body %}{% endblock %}
     </div>
@@ -150,7 +155,7 @@
 
 
   <!--Footer-->
-  <footer class="page-footer text-center font-small mt-4 wow fadeIn">
+  <footer class="page-footer text-center wow fadeIn">
 
 
     <!--Copyright-->

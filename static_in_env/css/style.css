@@ -1,0 +1,109 @@
+/* Required height of parents of the Half Page Carousel for proper displaying carousel itself */
+html,
+body,
+.view {
+  height: 100%; 
+}
+
+
+/* Half Page Carousel itself*/
+.carousel {
+  height: 50%; }
+  .carousel .carousel-inner {
+    height: 100%; }
+    .carousel .carousel-inner .carousel-item,
+    .carousel .carousel-inner .active {
+      height: 100%; }
+
+.card-image img {
+    width: 300px;
+    height: 300px;
+}
+
+.custom-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.busqueda {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+custom-navbar {
+  width: 300px;
+}
+
+.buttons {
+  display: flex;
+}
+
+.left {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: 50%;
+  justify-content: flex-start;
+}
+
+.left li a {
+  color: black !important;
+}
+
+.right {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: 50%;
+  justify-content: flex-end;
+}
+
+.right li a {
+  color: black !important;
+}
+
+/* Adjustment for mobile devices*/
+@media (max-width: 776px) {
+  .carousel {
+    height: 100%; } 
+  .hide {
+    display: none !important;
+  }
+
+  .left {
+    flex-flow: column;
+    width: 100%;
+  }
+
+  .right {
+    flex-flow: column;
+    width: 100%;
+  }
+    
+  }
+
+/* Footer color for sake of consistency with Navbar */
+.page-footer {
+  background-color: #929FBA; }
+
+.cerrar-sesion {
+  min-height: 70vh;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
