@@ -199,8 +199,8 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = config('EMAIL')
-EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
+EMAIL_HOST_USER = "ardants.shop@gmail.com"
+EMAIL_HOST_PASSWORD = "Z3us#121618"
+EMAIL_PORT = 587
 
 #STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
