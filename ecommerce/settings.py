@@ -201,6 +201,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = "ardants.shop@gmail.com"
 EMAIL_HOST_PASSWORD = "Z3us#121618"
-EMAIL_PORT = 587
+EMAIL_PORT = 465
 
 #STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
