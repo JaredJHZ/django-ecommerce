@@ -124,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = config('TZ')
 
 USE_I18N = True
 
@@ -154,7 +154,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 2
+SITE_ID = CONFIG('SITE')
 LOGIN_REDIRECT_URL = ''
 #crispy forms
 
@@ -186,18 +186,17 @@ SOCIALACCOUNT_PROVIDERS = \
         'VERIFIED_EMAIL': False,
         'VERSION': 'v2.4'}}
 
-SOCIAL_AUTH_FACEBOOK_KEY = '532734390949628!'  # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET ='3b727666e393ccda1591da437a5820d4' #app key
+
 LOGIN_REDIRECT_URL = "/" 
 
 ACCOUNT_EMAIL_REQUIRED=True
 ACCOUNT_USERNAME_REQURIED=True
-ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
 
 EMAIL_USE_TLS = True
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = "ardants.shop@gmail.com"
-EMAIL_HOST_PASSWORD = "Z3us#121618"
+EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
 EMAIL_PORT = 587
 
 #STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
